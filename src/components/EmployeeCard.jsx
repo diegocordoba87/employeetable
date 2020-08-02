@@ -10,13 +10,13 @@ const EmployeeCard = (props) => {
       <div className="content">
         <ul>
           <li>
-            <strong>Name:</strong> {props.name} <strong>Last Name:</strong> {props.lastName}
+            <strong>Name:</strong> {props.name} {props.lastName} <strong>Age:</strong> {props.age}
           </li>
           <li>
             <strong>Email:</strong> {props.email}
           </li>
           <li>
-            <strong>Nationality:</strong> {props.nationality}
+            <strong>Location:</strong> {props.city}, {props.country}
           </li>
         </ul>
       </div>            
