@@ -6,8 +6,7 @@ class Search extends Component {
   state = {
     employees: [],
     searchValue: "",
-    value: ""
-
+    value: "",
   };
 
   componentDidMount() {
@@ -22,18 +21,18 @@ class Search extends Component {
   }
 
   handleOnChange(event) {
-    this.setState({value: event.target.value});
-    this.handleSearch(this.state.value)
+    this.setState({ value: event.target.value });
+    this.handleSearch(this.state.value);
   }
 
- handleSearch=(searchedItem)=>{
-     
-     const filteredEmployees = this.state.employees.filter(employee => employee.name.first.includes(searchedItem));
-     
+  handleSearch = (searchedItem) => {
+    const filteredEmployees = this.state.employees.filter((employee) =>
+      employee.name.first.includes(searchedItem)
+    );
 
-     this.setState({employees: filteredEmployees});
-     console.log(this.state.searchValue)
-  }
+    this.setState({ employees: filteredEmployees });
+    console.log(this.state.searchValue);
+  };
   render() {
     return (
       <div className="container">
@@ -42,10 +41,15 @@ class Search extends Component {
             <h1>Employees Table</h1>
           </div>
           <div className="col">
-              <div>
-              <h4>Search by name: </h4> 
-              <input type="text" value={this.state.value} onChange={this.handleOnChange} placeholder="Name"/>
-              </div>         
+            <div>
+              <h4>Search by name: </h4>
+              <input
+                type="text"
+                value={this.state.value}
+                onChange={this.handleOnChange}
+                placeholder="Name"
+              />
+            </div>
           </div>
         </div>
         <div className="row">
