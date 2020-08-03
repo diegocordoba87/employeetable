@@ -4,6 +4,7 @@ import EmployeeCard from "../components/EmployeeCard";
 
 class Search extends Component {
   state = {
+    sortAsc: true,
     employees: [],
     search: "",
     filtered: [],
@@ -28,24 +29,40 @@ class Search extends Component {
       [name]: value,
     });
     console.log(event.target.value)
-    const filtered = this.state.employees.filter((emp) =>
-      emp.name.first.includes(this.state.search)
-    );
-    this.setState({ employees: filtered });
-  //   const filter = event.target.value;
-  //   const filteredList = this.state.employees.filter(item=>{
-  //     let values = Object.values(item).join("").toLowerCase();
-  //     return values.indexOf(filter.toLowerCase())!== -1;
-  //   });
-  //  this.setState({filtered: filteredList});
+    const filter = event.target.value;
+    const filteredList = this.state.employees.filter(item=>{
+      let values = Object.values(item).join("").toLowerCase();
+      return values.indexOf(filter.toLowerCase())!== -1;
+    });
+   this.setState({filtered: filteredList});
   };
 
-  handleSearch = () => {
-    const filtered = this.state.employees.filter((emp) =>
-      emp.name.first.includes(this.state.search)
-    );
-    this.setState({ employees: filtered });
-  };
+  sortEmployees = ()=>{
+    function compareAsc(a, b){
+      if(a.name.first > b.name.first) return 1
+      if(b.name.first >a.name.first) return -1
+      return 0;
+    }
+
+    function compareDesc(a, b){
+      if(a.name.first > b.name.first) return -1
+      if(b.name.first >a.name.first) return 1
+      return 0;
+    }
+    if(this.state.sortAsc){
+      const sortedEmployees = this.state.employees.sort(compareAsc)
+      this.setState({
+        filtered: sortedEmployees,
+      sortAsc: false})
+    }
+    else {
+      const sortedEmployees = this.state.employees.sort(compareDesc)
+      this.setState({
+        filtered: sortedEmployees,
+      sortAsc: true})
+    }
+    
+  }
   render() {
     return (
       <div className="container">
@@ -54,17 +71,13 @@ class Search extends Component {
             <h3 style={{marginTop: 35}}>Employees Table</h3>
           </div>
           <div className="col">
-          <button style={{marginTop: 35}}>Sort Ascending</button>
-          <button>Sort Decending</button>
-          </div>
-          <div className="col">
-            <h4>Search By Name: </h4>
+            <h4>Search: </h4>
             <input
               value={this.state.search}
               name="search"
               onChange={this.handleOnChange}
               type="text"
-              placeholder="First Name"
+              placeholder="Name or Last Name"
             />
           </div>
         </div>
@@ -74,14 +87,14 @@ class Search extends Component {
               <thead  className="thead-light">
                 <tr>
                   <th scope="col">Picture</th>
-                  <th scope="col">First</th>
+                  <th scope="col" onClick={this.sortEmployees}> <button className="">First</button></th>
                   <th scope="col">Last</th>
                   <th scope="col">Age</th>
                   <th scope="col">Email</th>
                   <th scope="col">Location</th>
                 </tr>
               </thead>
-              {this.state.employees.map((employee) => (
+              {this.state.filtered.map((employee) => (
                 <EmployeeCard
                   key={employee.login.uuid}
                   name={employee.name.first}
@@ -102,3 +115,6 @@ class Search extends Component {
 }
 
 export default Search;
+
+
+
