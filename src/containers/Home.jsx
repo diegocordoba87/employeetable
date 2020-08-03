@@ -5,17 +5,16 @@ import EmployeeCard from "../components/EmployeeCard";
 class Search extends Component {
   state = {
     employees: [],
-    searchValue: "",
-    value: "",
-    filter: [],
+    search: "",
+    filtered: [],
   };
 
   componentDidMount() {
     axios
       .get("https://randomuser.me/api/?results=100")
       .then((response) => {
-        this.setState({ employees: response.data.results });
-        this.setState({ filtered: response.data.results });
+        this.setState({ employees: response.data.results, filtered: response.data.results  });
+        
       })
       .catch((err) => {
         console.log(err);
@@ -23,15 +22,27 @@ class Search extends Component {
   }
 
   handleOnChange = (event) => {
+    event.preventDefault();
     const { name, value } = event.target;
     this.setState({
       [name]: value,
     });
+    console.log(event.target.value)
+    const filtered = this.state.employees.filter((emp) =>
+      emp.name.first.includes(this.state.search)
+    );
+    this.setState({ employees: filtered });
+  //   const filter = event.target.value;
+  //   const filteredList = this.state.employees.filter(item=>{
+  //     let values = Object.values(item).join("").toLowerCase();
+  //     return values.indexOf(filter.toLowerCase())!== -1;
+  //   });
+  //  this.setState({filtered: filteredList});
   };
 
-  handleSearch = (searchedItem) => {
+  handleSearch = () => {
     const filtered = this.state.employees.filter((emp) =>
-      emp.name.first.includes(searchedItem)
+      emp.name.first.includes(this.state.search)
     );
     this.setState({ employees: filtered });
   };
@@ -40,10 +51,14 @@ class Search extends Component {
       <div className="container">
         <div className="row">
           <div className="col">
-            <h1>Employees Table</h1>
+            <h3 style={{marginTop: 35}}>Employees Table</h3>
           </div>
           <div className="col">
-            <h4>Search by name: </h4>
+          <button style={{marginTop: 35}}>Sort Ascending</button>
+          <button>Sort Decending</button>
+          </div>
+          <div className="col">
+            <h4>Search By Name: </h4>
             <input
               value={this.state.search}
               name="search"
@@ -55,8 +70,8 @@ class Search extends Component {
         </div>
         <div className="row">
           <div className="col">
-            <table class="table">
-              <thead class="thead-light">
+            <table style={{marginTop: 10}} className="table">
+              <thead  className="thead-light">
                 <tr>
                   <th scope="col">Picture</th>
                   <th scope="col">First</th>
